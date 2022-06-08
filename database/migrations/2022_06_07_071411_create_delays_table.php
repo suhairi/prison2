@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('delays', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id');
-            $table->foreignId('product_id');
+            $table->foreignId('order_id')->constrained();
+            $table->foreignId('product_id')->constrained();
             $table->integer('quantity');
             $table->timestamps();
         });

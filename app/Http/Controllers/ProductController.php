@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
+
+use DataTables;
+
 class ProductController extends Controller
 {
     /**
@@ -12,9 +15,17 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax()) {
+
+            $products = Product::all();
+
+            return DataTables::of($products)
+                    ->make(true);
+        }
+
+        return view('products.index');
     }
 
     /**

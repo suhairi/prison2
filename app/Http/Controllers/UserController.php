@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setting;
 use Illuminate\Http\Request;
+
+use App\Models\User;
 
 use DataTables;
 
-class SettingController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,27 +16,21 @@ class SettingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
+    {   
+
+
+
         if($request->ajax()) {
 
-            $settings = Setting::where('lock', 'NO')->get();
+            $users = User::where('role', 'USER')->get();
 
-            return DataTables::of($settings)
-                    ->addIndexColumn()
-                    ->addColumn('lock', function($setting) {
-
-                        $alert = "btn-success";
-
-                        if($setting->lock == 'YES')
-                            $alert = "btn-warning";
-
-                        return "<a href='#' class='btn btn-sm " . $alert ."'>" . $setting->lock . "</a>";
-                    })
-                    ->rawColumns(['lock'])
+            return DataTables::of($users)
                     ->make(true);
-        }
 
-        return view('settings.index');
+        }
+        
+
+        return view('users.index');
     }
 
     /**
@@ -62,10 +57,10 @@ class SettingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Setting  $setting
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Setting $setting)
+    public function show($id)
     {
         //
     }
@@ -73,10 +68,10 @@ class SettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Setting  $setting
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Setting $setting)
+    public function edit($id)
     {
         //
     }
@@ -85,10 +80,10 @@ class SettingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Setting  $setting
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Setting $setting)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -96,10 +91,10 @@ class SettingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Setting  $setting
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Setting $setting)
+    public function destroy($id)
     {
         //
     }
