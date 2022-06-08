@@ -21,17 +21,24 @@ class SettingController extends Controller
             $settings = Setting::where('lock', 'NO')->get();
 
             return DataTables::of($settings)
-                    ->addIndexColumn()
+                    ->addColumn('bulan_tahun', function($setting) {
+                        $bulan = substr($setting->bulan_tahun, 0, 2);
+                        $tahun = substr($setting->bulan_tahun, 2, 4);
+
+                        $bulan_tahun = $bulan . '/' . $tahun;
+
+                        return $bulan_tahun;
+                    })
                     ->addColumn('lock', function($setting) {
 
-                        $alert = "btn-success";
+                        $btn = "btn-success";
 
                         if($setting->lock == 'YES')
-                            $alert = "btn-warning";
+                            $btn = "btn-warning";
 
-                        return "<a href='#' class='btn btn-sm " . $alert ."'>" . $setting->lock . "</a>";
+                        return "<a href='#' class='btn btn-sm " . $btn ."'>" . $setting->lock . "</a>";
                     })
-                    ->rawColumns(['lock'])
+                    ->rawColumns(['bulan_tahun', 'lock'])
                     ->make(true);
         }
 

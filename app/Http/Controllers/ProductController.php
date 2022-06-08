@@ -22,6 +22,22 @@ class ProductController extends Controller
             $products = Product::all();
 
             return DataTables::of($products)
+                    ->addColumn('price', function($product) {
+
+                        return "<a href='#' title='Edit Price'>" . $product->price . "</a>";
+                    })
+                    ->addColumn('status', function($product) {
+
+                        $btn = "btn-success";
+                        $title = "Deactivate Status";
+                        if($product->status == "INACTIVE") {
+                            $btn    = "btn-warning";
+                            $title  = "Activate Status";
+                        }
+
+                        return "<a href='#' class='btn btn-sm ". $btn ."' title='". $title ."'>" . $product->status . "</a>";
+                    })
+                    ->rawColumns(['price', 'status'])
                     ->make(true);
         }
 

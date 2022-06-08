@@ -5,9 +5,13 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header"><strong>Users</strong></div>
+                <div class="card-header text-white bg-primary"><strong>Products</strong></div>
 
                 <div class="card-body">
+
+                    <div class="col-md-10 mb-3">
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fa fa-cart-plus"></i> Add a Product</a>
+                    </div>
 
                     <div>
                     <table class="table table-bordered table-hover table-striped data-table">
@@ -15,6 +19,7 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Price</th>
+                            <th>Status</th>
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -41,6 +46,7 @@
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
                 {data: 'price', name: 'price'},
+                {data: 'status', name: 'status'},
             ]
         });
     });
