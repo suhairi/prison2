@@ -66,15 +66,29 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('users.index') }}">Users</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('products.index') }}">Products</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('settings.index') }}">Settings</a>
-                            </li>                           
+
+                            @if(Auth::user()->role == 'ADMIN' || Auth::user()->role == 'ROOT')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('users.index') }}">Users</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('products.index') }}">Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('settings.index') }}">Settings</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('orders.index') }}">Orders</a>
+                                </li>
+                                
+                            @endif
+
+                            @if(Auth::user()->role == 'USER')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('orders.userIndex') }}">Order</a>
+                                </li>
+
+                            @endif
 
 
                             

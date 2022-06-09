@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Delay;
+use App\Models\Order;
 
 class Product extends Model
 {
@@ -15,5 +16,9 @@ class Product extends Model
 
     public function delays() {
         return $this->hasOne(Delay::class);
+    }
+
+    public function order() {
+        return $this->belongsToMany(Order::class)->withPivot('quantity');
     }
 }

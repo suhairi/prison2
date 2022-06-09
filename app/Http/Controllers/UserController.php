@@ -26,28 +26,21 @@ class UserController extends Controller
 
             return DataTables::of($users)
                     ->addColumn('name', function($user) {
-
                         $name = ucWords(strtolower($user->name));
-
                         return "<a href='#' title='Edit User'>" . $name . "</a>";
                     })
                     ->addColumn('section', function($user) {
                         $section = ucWords(strtolower($user->section));
-
                         return $section;
                     })
                     ->addColumn('role', function($user) {
                         $role = ucWords(strtolower($user->role));
-
                         return $role;
                     })
                     ->addColumn('status', function($user) {
-
                         $btn = "btn-success";
-
                         if($user->status == 'INACTIVE')
                             $btn = "btn-warning";
-
                         return "<a href='#' class='btn btn-sm " . $btn . "' title='Deactivate Status'>" . $user->status . "</a>";
                     })
                     ->rawColumns(['name', 'section', 'role', 'status'])

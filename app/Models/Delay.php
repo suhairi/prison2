@@ -15,10 +15,10 @@ class Delay extends Model
     protected $fillable = ['order_id', 'product_id', 'quantity'];
 
     public function orders() {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
     public function products() {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 }

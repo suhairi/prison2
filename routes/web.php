@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,13 +26,27 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function() {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    Route::resource('/users', UserController::class);
-    Route::resource('/products', ProductController::class);
-    Route::resource('/settings', SettingController::class);
+    // Route::middleware(['users'])->group(function() {
+
+    //     Route::get('/userOrders', [OrderController::class, 'userIndex'])->name('orders.userIndex');
+    // });
+
+    Route::middleware(['admin'])->group(function() {
+
+        Route::resource('/users', UserController::class);
+        Route::resource('/products', ProductController::class);
+        Route::resource('/settings', SettingController::class);
+        // Route::resource('/orders', OrderController::class);
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+    });
+    
+
+    
 
 });
 
