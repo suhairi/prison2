@@ -9,6 +9,11 @@
 				<div class="card-header text-white bg-primary">Orders List</div>
 				<div class="card-body">
 
+					<div class="w-100 pull-right">
+                        <a href="{{ route('orders.summary') }}" class="card-text btn btn-primary">Product Summary</a>
+                    </div>
+                    <br />
+
 					<table class="table table-bordered table-hover table-striped data-table">
 						<thead class="thead-dark">
 							<tr>

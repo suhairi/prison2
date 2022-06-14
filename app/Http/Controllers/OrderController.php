@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Query\Builder;
+
 use App\Models\Order;
 use Illuminate\Http\Request;
 
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\Product;
 
 use DataTables;
 
@@ -18,28 +21,6 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request) {
-
-        // $orders = Order::take(5)->get();
-
-        // foreach($orders as $order) {
-
-        //     $grandTotal = 0;
-        //     foreach($order->products as $product) {
-        //         echo 'Price : RM'. $product->price .'<br />';
-        //         echo 'Quantity : '. $product->pivot->quantity .'<br />';
-        //         $subTotal = $product->price * $product->pivot->quantity;
-        //         echo 'Total : RM'. $subTotal .'<br />';
-        //         echo '<br />';
-
-        //         $grandTotal += $subTotal;
-        //     }
-
-        //     echo '<br />';
-        //     echo 'Grand Total : RM'. $grandTotal .'<br />';
-        //     echo '<br /><br />';
-        // }
-
-        // return;
 
         if($request->ajax()) {
 
@@ -171,6 +152,63 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         //
+    }
+
+    public function summary(Request $request) {
+
+        $setting = Setting::where('lock', 'NO')->first();
+        $orders = Order::where('setting_id', $setting->id)->get();
+        $products = Product::all();
+
+        $productsOrdered = collect([]);
+        foreach($orders as $order) {
+
+            foreach($order->products as $product) {
+
+                $prod['id'] = $product->id;
+                $prod['quantity'] = $product->pivot->quantity;
+                $productsOrdered->push($prod);
+
+            }
+        }
+
+        $prod = [];
+        $count = $productsOrdered->countBy('id');
+
+        $filteredProduct = collect([]);
+        foreach($count as $key => $value) {
+            
+            $temp = $productsOrdered->where('id', $key);
+            $prod['id']             = $key;
+            $prod['quantity']       = $temp->sum('quantity');
+            $prod['name']           = Product::where('id', $key)->first('name')->name;
+            $prod['price']          = Product::where('id', $key)->first('price')->price;
+            $prod['total']          = $prod['price'] * $prod['quantity'];
+            $filteredProduct->push($prod);
+        }
+
+        $filteredProduct = $filteredProduct->sortBy('name');
+
+        if($request->ajax()) {
+
+            return DataTables::of($filteredProduct)
+                    ->addColumn('name', function($product) {
+                        return $product['name'];
+                    })
+                    ->addColumn('price', function($product) {
+                        return $product['price'];
+                    })
+                    ->addColumn('quantity', function($product) {
+                        return $product['quantity'];
+                    })
+                    ->addColumn('total', function($product) {
+                        return number_format($product['total'], 2);
+                    })
+                    ->rawColumns(['name', 'price', 'quantity', 'total'])
+                    ->make(true);
+        }
+
+        return view('summary.products');
     }
 
 

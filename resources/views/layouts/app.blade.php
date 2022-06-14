@@ -80,6 +80,24 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('orders.index') }}">Orders</a>
                                 </li>
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        Summary
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('orders.summary') }}">
+                                            Products
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('orders.summary') }}">
+                                            Products 2
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        
+                                    </div>
+                                </li>
+                                
                                 
                             @endif
 

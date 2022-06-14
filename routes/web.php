@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('/settings', SettingController::class);
         // Route::resource('/orders', OrderController::class);
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/summary', [OrderController::class, 'summary'])->name('orders.summary');
 
     });
     
