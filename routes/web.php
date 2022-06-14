@@ -30,19 +30,20 @@ Route::middleware(['auth'])->group(function() {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // Route::middleware(['users'])->group(function() {
-
-    //     Route::get('/userOrders', [OrderController::class, 'userIndex'])->name('orders.userIndex');
-    // });
-
     Route::middleware(['admin'])->group(function() {
 
+        Route::get('/users/activate/{id}', [UserController::class, 'activate'])->name('users.activate');
         Route::resource('/users', UserController::class);
+
+        Route::get('products/activate/{id}', [ProductController::class, 'activate'])->name('products.activate');
         Route::resource('/products', ProductController::class);
+
         Route::resource('/settings', SettingController::class);
-        // Route::resource('/orders', OrderController::class);
-        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/settings/activate/{id}', [SettingController::class, 'activate'])->name('settings.activate');
+
         Route::get('/orders/summary', [OrderController::class, 'summary'])->name('orders.summary');
+        Route::resource('/orders', OrderController::class);
+        
 
     });
     

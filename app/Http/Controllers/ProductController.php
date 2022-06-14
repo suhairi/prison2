@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Session;
+
 
 use DataTables;
 
@@ -35,7 +37,7 @@ class ProductController extends Controller
                             $title  = "Activate Status";
                         }
 
-                        return "<a href='#' class='btn btn-sm ". $btn ."' title='". $title ."'>" . $product->status . "</a>";
+                        return "<a href='". route('products.activate', $product->id) ."' class='btn btn-sm ". $btn ."' title='". $title ."'>" . $product->status . "</a>";
                     })
                     ->rawColumns(['price', 'status'])
                     ->make(true);
@@ -108,5 +110,21 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function activate($id) {
+
+        $product = Product::find($id);
+
+        if($product->status == 'ACTIVE')
+            $product->status = 'INACTIVE';
+        else
+            $product->status = 'ACTIVE';
+
+        $product->save();
+
+        Session::flash('success', 'Success. Product\'s status has been updated.');
+
+        return redirect()->back();
     }
 }

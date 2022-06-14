@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Database\Query\Builder;
 
+use Illuminate\Support\Facades\Session;
+
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -22,10 +24,17 @@ class OrderController extends Controller
      */
     public function index(Request $request) {
 
-        if($request->ajax()) {
+        $setting    = Setting::where('lock', 'NO')->first();        
 
-            $setting    = Setting::where('lock', 'NO')->first();
-            $orders     = Order::where('setting_id', $setting->id)->get();
+        if($setting == null) {
+
+            Session::flash('fail', 'Error. Order has been lock. Cannot view the page.');
+            return redirect()->back();
+        }
+
+        $orders     = Order::where('setting_id', $setting->id)->get();
+
+        if($request->ajax()) {
 
             return DataTables::of($orders)
                     ->addColumn('name', function($order) {

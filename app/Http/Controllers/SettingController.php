@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Session;
+
 use DataTables;
 
 class SettingController extends Controller
@@ -18,7 +20,7 @@ class SettingController extends Controller
     {
         if($request->ajax()) {
 
-            $settings = Setting::where('lock', 'NO')->get();
+            $settings = Setting::all();
 
             return DataTables::of($settings)
                     ->addColumn('bulan_tahun', function($setting) {
@@ -32,11 +34,14 @@ class SettingController extends Controller
                     ->addColumn('lock', function($setting) {
 
                         $btn = "btn-success";
+                        $title = 'Lock Order';
 
-                        if($setting->lock == 'YES')
+                        if($setting->lock == 'YES') {
                             $btn = "btn-warning";
+                            $title = 'Unlock Order';
+                        }
 
-                        return "<a href='#' class='btn btn-sm " . $btn ."'>" . $setting->lock . "</a>";
+                        return "<a href='". route('settings.activate', $setting->id) ."' class='btn btn-sm " . $btn ."' title='". $title ."'>" . $setting->lock . "</a>";
                     })
                     ->rawColumns(['bulan_tahun', 'lock'])
                     ->make(true);
@@ -109,5 +114,21 @@ class SettingController extends Controller
     public function destroy(Setting $setting)
     {
         //
+    }
+
+    public function activate($id) {
+
+        $setting = Setting::find($id);
+
+        if($setting->lock == 'NO')
+            $setting->lock = 'YES';
+        else
+            $setting->lock = 'NO';
+
+        $setting->save();
+
+        Session::flash('success', 'Success. Order has been locked.');
+
+        return redirect()->back();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 use App\Models\User;
 
@@ -41,7 +42,7 @@ class UserController extends Controller
                         $btn = "btn-success";
                         if($user->status == 'INACTIVE')
                             $btn = "btn-warning";
-                        return "<a href='#' class='btn btn-sm " . $btn . "' title='Deactivate Status'>" . $user->status . "</a>";
+                        return "<a href='". route('users.activate', $user->id) ."' class='btn btn-sm " . $btn . "' title='Deactivate Status'>" . $user->status . "</a>";
                     })
                     ->rawColumns(['name', 'section', 'role', 'status'])
                     ->make(true);
@@ -117,4 +118,22 @@ class UserController extends Controller
     {
         //
     }
+
+    public function activate($id) {
+
+        $user = User::find($id);
+
+        if($user->status == 'ACTIVE')
+            $user->status = 'INACTIVE';
+        else
+            $user->status = 'ACTIVE';
+
+        $user->save();
+
+        Session::flash('success', 'Success. User\'s status has been updated.');
+
+        return redirect()->back();
+        return $id;
+    }
+
 }

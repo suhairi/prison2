@@ -89,12 +89,9 @@
                                         <a class="dropdown-item" href="{{ route('orders.summary') }}">
                                             Products
                                         </a>
-                                        <a class="dropdown-item" href="{{ route('orders.summary') }}">
+                                        <a class="dropdown-item" href="#">
                                             Products 2
                                         </a>
-                                    </div>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        
                                     </div>
                                 </li>
                                 
