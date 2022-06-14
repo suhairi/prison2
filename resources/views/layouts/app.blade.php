@@ -100,7 +100,7 @@
 
                             @if(Auth::user()->role == 'USER')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('orders.userIndex') }}">Order</a>
+                                    <a class="nav-link" href="{{ route('order.index') }}">Order</a>
                                 </li>
 
                             @endif

@@ -12,12 +12,16 @@
         
 		<div class="col col-mb-10">
 			<div class="card">
-				<div class="card-header text-white bg-primary">Orders</div>
+				<div class="card-header text-white bg-primary">Orders List</div>
 				<div class="card-body">
 
 					<table class="table table-bordered table-hover table-striped data-table">
-						<thead>
-							<th>#</th>							
+						<thead class="thead-dark">
+							<tr>
+								<th>#</th>							
+								<th>Bulan/Tahun</th>
+								<th>Details</th>
+							</tr>
 						</thead>
 						<tbody></tbody>
 					</table>
@@ -31,19 +35,25 @@
 
 @endsection
 
-@push('sripts')
+@push('scripts')
 	
 	<script type="text/javascript">
 
+
     $(function () {
-      
+
         var table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('orders.userIndex') }}",
+            ajax: "{{ route('order.index') }}",
             columns: [
                 {data: 'id', name: 'id'},
-            ]
+                {data: 'bulan_tahun', name: 'bulan_tahun'},
+                {data: 'details', name: 'details'},
+            ],
+            success:function(data) {
+            	console.log('here')
+            }
         });
     });
 

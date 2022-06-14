@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
 
 Route::middleware(['auth'])->group(function() {
 
+
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::middleware(['admin'])->group(function() {
@@ -43,7 +45,11 @@ Route::middleware(['auth'])->group(function() {
 
         Route::get('/orders/summary', [OrderController::class, 'summary'])->name('orders.summary');
         Route::resource('/orders', OrderController::class);
-        
+    });
+
+    Route::middleware(['users'])->group(function () {
+
+        Route::resource('/user/order', UserOrderController::class);
 
     });
     
